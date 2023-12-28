@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./style.css" />
     <title>Trello Clone</title>
   </head>
   <body>
@@ -14,11 +14,10 @@
     </nav>
 
     <div class="main-content">
-        
       <div class="items-container" draggable="true">
         <div class="top-container">
           <h2>Current</h2>
-          <button class="" delete-container-btn>X</button>
+          <button class="delete-container-btn">X</button>
         </div>
         <ul></ul>
         <button class="add-item-btn">Add an item</button>
@@ -36,7 +35,7 @@
       <div class="items-container" draggable="true">
         <div class="top-container">
           <h2>To do</h2>
-          <button class="" delete-container-btn>X</button>
+          <button class="delete-container-btn">X</button>
         </div>
         <ul></ul>
         <button class="add-item-btn">Add an item</button>
@@ -54,7 +53,7 @@
       <div class="items-container" draggable="true">
         <div class="top-container">
           <h2>Finished</h2>
-          <button class="" delete-container-btn>X</button>
+          <button class="delete-container-btn">X</button>
         </div>
         <ul></ul>
         <button class="add-item-btn">Add an item</button>
@@ -72,18 +71,17 @@
       <div class="add-new-container">
         <button class="add-container-btn">Add another container</button>
         <form autocomplete="off">
-            <div class="top-form-container">
-                <label for="item">Add a new container</label>
-                <button type="button" class="close-form-btn">X</button>
-              </div>
-              <input type="text" id="new-container" />
-              <span class="validation-msg"></span>
-              <button type="submit">Submit</button>
+          <div class="top-form-container">
+            <label for="item">Add a new container</label>
+            <button type="button" class="close-form-btn">X</button>
+          </div>
+          <input type="text" id="new-container" />
+          <span class="validation-msg"></span>
+          <button type="submit">Submit</button>
         </form>
       </div>
-
     </div>
 
-    <script src="app.js"></script>
+    <script src="./scripts/app.js"></script>
   </body>
 </html>
