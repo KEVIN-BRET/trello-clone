@@ -133,3 +133,33 @@ function handleItemDeletion(btn: HTMLButtonElement) {
     elToRemove.remove();
   });
 }
+
+//* ADD NEW CONTAINER *//
+
+const addContainerBtn = document.querySelector(
+  ".add-container-btn"
+) as HTMLButtonElement;
+const addContainerForm = document.querySelector(
+  ".add-new-container form"
+) as HTMLFormElement;
+const addContainerFormInput = document.querySelector(
+  ".add-new-container input"
+) as HTMLInputElement;
+const validationNewContainer = document.querySelector(
+  ".add-new-container .validation-msg"
+) as HTMLSpanElement;
+const addContainerCloseBtn = document.querySelector(
+  ".close-add-list"
+) as HTMLButtonElement;
+const addNewContainer = document.querySelector(
+  ".add-new-container"
+) as HTMLDivElement;
+const containersList = document.querySelector(".main-content");
+
+addContainerBtn.addEventListener("click", () => {
+  toggleForm(addContainerBtn, addContainerForm, true);
+});
+
+addContainerCloseBtn.addEventListener("click", () => {
+  toggleForm(addContainerBtn, addContainerForm, false);
+});

@@ -100,3 +100,17 @@ function handleItemDeletion(btn) {
         elToRemove.remove();
     });
 }
+//* ADD NEW CONTAINER *//
+const addContainerBtn = document.querySelector(".add-container-btn");
+const addContainerForm = document.querySelector(".add-new-container form");
+const addContainerFormInput = document.querySelector(".add-new-container input");
+const validationNewContainer = document.querySelector(".add-new-container .validation-msg");
+const addContainerCloseBtn = document.querySelector(".close-add-list");
+const addNewContainer = document.querySelector(".add-new-container");
+const containersList = document.querySelector(".main-content");
+addContainerBtn.addEventListener("click", () => {
+    toggleForm(addContainerBtn, addContainerForm, true);
+});
+addContainerCloseBtn.addEventListener("click", () => {
+    toggleForm(addContainerBtn, addContainerForm, false);
+});
