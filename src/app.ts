@@ -154,7 +154,9 @@ const addContainerCloseBtn = document.querySelector(
 const addNewContainer = document.querySelector(
   ".add-new-container"
 ) as HTMLDivElement;
-const containersList = document.querySelector(".main-content");
+const containersList = document.querySelector(
+  ".main-content"
+) as HTMLDivElement;
 
 addContainerBtn.addEventListener("click", () => {
   toggleForm(addContainerBtn, addContainerForm, true);
@@ -163,3 +165,44 @@ addContainerBtn.addEventListener("click", () => {
 addContainerCloseBtn.addEventListener("click", () => {
   toggleForm(addContainerBtn, addContainerForm, false);
 });
+
+addContainerForm.addEventListener("submit", createNewContainer);
+
+function createNewContainer(e: Event) {
+  e.preventDefault();
+
+  // Vàlidation
+  if (addContainerFormInput.value.length === 0) {
+    validationNewContainer.textContent = "Must be at least 1 caracter long";
+    return;
+  } else {
+    validationNewContainer.textContent = "";
+  }
+
+  const itemsContainer = document.querySelector(
+    ".items-container"
+  ) as HTMLDivElement;
+  const newContainer = itemsContainer.cloneNode() as HTMLDivElement;
+
+  const newContainerContent = `
+        <div class="top-container">
+          <h2>${addContainerFormInput.value}</h2>
+          <button class="delete-container-btn">X</button>
+        </div>
+        <ul></ul>
+        <button class="add-item-btn">Add an item</button>
+        <form autocomplete="off">
+          <div class="top-form-container">
+            <label for="item">Add a new item</label>
+            <button type="button" class="close-form-btn">X</button>
+          </div>
+          <input type="text" id="item" />
+          <span class="validation-msg"></span>
+          <button type="submit">Submit</button>
+        </form>
+  `;
+  newContainer.innerHTML = newContainerContent;
+  containersList.insertBefore(newContainer, addNewContainer);
+  addContainerFormInput.value = "";
+  addContainerListeners(newContainer);
+}
