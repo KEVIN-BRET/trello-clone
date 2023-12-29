@@ -22,8 +22,16 @@ function addContainerListeners(currentContainer: HTMLDivElement) {
     ".add-item-btn"
   ) as HTMLButtonElement;
 
+  const currentCloseFormBtn = currentContainer.querySelector(
+    ".close-form-btn"
+  ) as HTMLButtonElement;
+
+  const currentForm = currentContainer.querySelector("form") as HTMLFormElement;
+
   deleteBtnListeners(currentContainerDeletionBtn);
   addItemBtnListener(currentAddItemBtn);
+  closingFormBtnListeners(currentCloseFormBtn);
+  addFormSubmitListeners(currentForm);
 }
 
 //
@@ -38,6 +46,14 @@ function deleteBtnListeners(btn: HTMLButtonElement) {
 
 function addItemBtnListener(btn: HTMLButtonElement) {
   btn.addEventListener("click", handleAddItem);
+}
+
+function closingFormBtnListeners(btn: HTMLButtonElement) {
+  btn.addEventListener("click", () => toggleForm(actualBtn, actualForm, false));
+}
+
+function addFormSubmitListeners(form: HTMLFormElement) {
+  form.addEventListener("submit", createNewItem);
 }
 
 //
@@ -83,6 +99,37 @@ function setContainerItem(btn: HTMLButtonElement) {
   actualForm = actualContainer.querySelector("form") as HTMLFormElement;
   actualTextInput = actualContainer.querySelector("input") as HTMLInputElement;
   actualValidation = actualContainer.querySelector(
-    "validation-msg"
+    ".validation-msg"
   ) as HTMLSpanElement;
+}
+
+function createNewItem(e: Event) {
+  e.preventDefault();
+  // Vàlidation
+  if (actualTextInput.value.length === 0) {
+    actualValidation.textContent = "Must be at least 1 caracter long";
+    return;
+  } else {
+    actualValidation.textContent = "";
+  }
+  // Création d'un item
+  const itemContent = actualTextInput.value;
+  const li = `
+    <li class="item" draggable=true>
+    <p>${itemContent}</p>
+    <button>X</button>
+    </li>
+  `;
+  actualUL.insertAdjacentHTML("beforeend", li);
+  const item = actualUL.lastElementChild as HTMLLIElement;
+  const liBtn = item.querySelector("button") as HTMLButtonElement;
+  handleItemDeletion(liBtn);
+  actualTextInput.value = "";
+}
+
+function handleItemDeletion(btn: HTMLButtonElement) {
+  btn.addEventListener("click", () => {
+    const elToRemove = btn.parentElement as HTMLLIElement;
+    elToRemove.remove();
+  });
 }
