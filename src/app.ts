@@ -153,7 +153,7 @@ function handleDragStart(this: HTMLElement, e: DragEvent) {
 
   if (actualContainer) toggleForm(actualBtn, actualForm, false);
   dragSrcE1 = this;
-  e.dataTransfer?.setData("text/thml", this.innerHTML);
+  e.dataTransfer?.setData("text/html", this.innerHTML);
 }
 
 function handleDragOver(e: DragEvent) {
@@ -173,6 +173,35 @@ function handleDrop(this: HTMLElement, e: DragEvent) {
     );
     addDDListeners(dragSrcE1);
     handleItemDeletion(dragSrcE1.querySelector("button") as HTMLButtonElement);
+  }
+
+  if (dragSrcE1 !== this && this.classList[0] === dragSrcE1.classList[0]) {
+    dragSrcE1.innerHTML = this.innerHTML;
+    this.innerHTML = e.dataTransfer?.getData("text/html") as string;
+    if (this.classList.contains("items-container")) {
+      addContainerListeners(this as HTMLDivElement);
+
+      this.querySelectorAll("li").forEach((li: HTMLLIElement) => {
+        handleItemDeletion(li.querySelector("button") as HTMLButtonElement);
+        addDDListeners(li);
+      });
+    } else {
+      addDDListeners(this);
+      handleItemDeletion(this.querySelector("button") as HTMLButtonElement);
+    }
+  }
+}
+
+function handleDragEnd(this: HTMLElement, e: DragEvent) {
+  e.stopPropagation();
+  if (this.classList.contains("items-container")) {
+    addContainerListeners(this as HTMLDivElement);
+    this.querySelectorAll("li").forEach((li: HTMLLIElement) => {
+      handleItemDeletion(li.querySelector("button") as HTMLButtonElement);
+      addDDListeners(li);
+    });
+  } else {
+    addDDListeners(this);
   }
 }
 

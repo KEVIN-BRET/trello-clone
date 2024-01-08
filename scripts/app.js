@@ -117,12 +117,13 @@ function handleDragStart(e) {
     if (actualContainer)
         toggleForm(actualBtn, actualForm, false);
     dragSrcE1 = this;
-    (_a = e.dataTransfer) === null || _a === void 0 ? void 0 : _a.setData("text/thml", this.innerHTML);
+    (_a = e.dataTransfer) === null || _a === void 0 ? void 0 : _a.setData("text/html", this.innerHTML);
 }
 function handleDragOver(e) {
     e.preventDefault();
 }
 function handleDrop(e) {
+    var _a;
     e.stopPropagation();
     const receptionE1 = this;
     if (dragSrcE1.nodeName === "LI" &&
@@ -130,6 +131,34 @@ function handleDrop(e) {
         receptionE1.querySelector("ul").appendChild(dragSrcE1);
         addDDListeners(dragSrcE1);
         handleItemDeletion(dragSrcE1.querySelector("button"));
+    }
+    if (dragSrcE1 !== this && this.classList[0] === dragSrcE1.classList[0]) {
+        dragSrcE1.innerHTML = this.innerHTML;
+        this.innerHTML = (_a = e.dataTransfer) === null || _a === void 0 ? void 0 : _a.getData("text/html");
+        if (this.classList.contains("items-container")) {
+            addContainerListeners(this);
+            this.querySelectorAll("li").forEach((li) => {
+                handleItemDeletion(li.querySelector("button"));
+                addDDListeners(li);
+            });
+        }
+        else {
+            addDDListeners(this);
+            handleItemDeletion(this.querySelector("button"));
+        }
+    }
+}
+function handleDragEnd(e) {
+    e.stopPropagation();
+    if (this.classList.contains("items-container")) {
+        addContainerListeners(this);
+        this.querySelectorAll("li").forEach((li) => {
+            handleItemDeletion(li.querySelector("button"));
+            addDDListeners(li);
+        });
+    }
+    else {
+        addDDListeners(this);
     }
 }
 //* ADD NEW CONTAINER *//
