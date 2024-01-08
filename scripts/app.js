@@ -14,6 +14,8 @@ function addContainerListeners(currentContainer) {
     addItemBtnListener(currentAddItemBtn);
     closingFormBtnListeners(currentCloseFormBtn);
     addFormSubmitListeners(currentForm);
+    // Drag'n'Drop :
+    addDDListeners(currentContainer);
 }
 //
 itemsContainer.forEach((container) => {
@@ -31,6 +33,12 @@ function closingFormBtnListeners(btn) {
 }
 function addFormSubmitListeners(form) {
     form.addEventListener("submit", createNewItem);
+}
+function addDDListeners(element) {
+    element.addEventListener("dragstart", handleDragStart);
+    element.addEventListener("dragover", handleDragOver);
+    element.addEventListener("drop", handleDrop);
+    element.addEventListener("dragend", handleDragEnd);
 }
 //
 function handleContainerDeletion(e) {
@@ -92,6 +100,7 @@ function createNewItem(e) {
     const item = actualUL.lastElementChild;
     const liBtn = item.querySelector("button");
     handleItemDeletion(liBtn);
+    addDDListeners(item);
     actualTextInput.value = "";
 }
 function handleItemDeletion(btn) {
@@ -99,6 +108,29 @@ function handleItemDeletion(btn) {
         const elToRemove = btn.parentElement;
         elToRemove.remove();
     });
+}
+//* DRAG AND DROP *//
+let dragSrcE1;
+function handleDragStart(e) {
+    var _a;
+    e.stopPropagation();
+    if (actualContainer)
+        toggleForm(actualBtn, actualForm, false);
+    dragSrcE1 = this;
+    (_a = e.dataTransfer) === null || _a === void 0 ? void 0 : _a.setData("text/thml", this.innerHTML);
+}
+function handleDragOver(e) {
+    e.preventDefault();
+}
+function handleDrop(e) {
+    e.stopPropagation();
+    const receptionE1 = this;
+    if (dragSrcE1.nodeName === "LI" &&
+        receptionE1.classList.contains("items-container")) {
+        receptionE1.querySelector("ul").appendChild(dragSrcE1);
+        addDDListeners(dragSrcE1);
+        handleItemDeletion(dragSrcE1.querySelector("button"));
+    }
 }
 //* ADD NEW CONTAINER *//
 const addContainerBtn = document.querySelector(".add-container-btn");

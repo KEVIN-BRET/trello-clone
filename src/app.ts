@@ -32,6 +32,8 @@ function addContainerListeners(currentContainer: HTMLDivElement) {
   addItemBtnListener(currentAddItemBtn);
   closingFormBtnListeners(currentCloseFormBtn);
   addFormSubmitListeners(currentForm);
+  // Drag'n'Drop :
+  addDDListeners(currentContainer);
 }
 
 //
@@ -54,6 +56,13 @@ function closingFormBtnListeners(btn: HTMLButtonElement) {
 
 function addFormSubmitListeners(form: HTMLFormElement) {
   form.addEventListener("submit", createNewItem);
+}
+
+function addDDListeners(element: HTMLElement) {
+  element.addEventListener("dragstart", handleDragStart);
+  element.addEventListener("dragover", handleDragOver);
+  element.addEventListener("drop", handleDrop);
+  element.addEventListener("dragend", handleDragEnd);
 }
 
 //
@@ -124,6 +133,7 @@ function createNewItem(e: Event) {
   const item = actualUL.lastElementChild as HTMLLIElement;
   const liBtn = item.querySelector("button") as HTMLButtonElement;
   handleItemDeletion(liBtn);
+  addDDListeners(item);
   actualTextInput.value = "";
 }
 
@@ -132,6 +142,38 @@ function handleItemDeletion(btn: HTMLButtonElement) {
     const elToRemove = btn.parentElement as HTMLLIElement;
     elToRemove.remove();
   });
+}
+
+//* DRAG AND DROP *//
+
+let dragSrcE1: HTMLElement;
+
+function handleDragStart(this: HTMLElement, e: DragEvent) {
+  e.stopPropagation();
+
+  if (actualContainer) toggleForm(actualBtn, actualForm, false);
+  dragSrcE1 = this;
+  e.dataTransfer?.setData("text/thml", this.innerHTML);
+}
+
+function handleDragOver(e: DragEvent) {
+  e.preventDefault();
+}
+
+function handleDrop(this: HTMLElement, e: DragEvent) {
+  e.stopPropagation();
+  const receptionE1 = this;
+
+  if (
+    dragSrcE1.nodeName === "LI" &&
+    receptionE1.classList.contains("items-container")
+  ) {
+    (receptionE1.querySelector("ul") as HTMLUListElement).appendChild(
+      dragSrcE1
+    );
+    addDDListeners(dragSrcE1);
+    handleItemDeletion(dragSrcE1.querySelector("button") as HTMLButtonElement);
+  }
 }
 
 //* ADD NEW CONTAINER *//
